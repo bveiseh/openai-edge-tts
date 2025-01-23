@@ -4,6 +4,8 @@ from flask import Flask, request, send_file, jsonify
 from gevent.pywsgi import WSGIServer
 from dotenv import load_dotenv
 import os
+import socket
+
 
 from handle_text import prepare_tts_input_with_context
 from tts_handler import generate_speech, get_models, get_voices
@@ -163,5 +165,6 @@ print(f" * TTS Endpoint: http://localhost:{PORT}/v1/audio/speech")
 print(f" ")
 
 if __name__ == '__main__':
-    http_server = WSGIServer(('0.0.0.0', PORT), app)
+    # Create an IPv6 server
+    http_server = WSGIServer(('::', PORT), app, address_family=socket.AF_INET6)
     http_server.serve_forever()
